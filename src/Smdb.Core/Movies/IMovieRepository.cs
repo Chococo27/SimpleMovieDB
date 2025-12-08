@@ -2,6 +2,7 @@ namespace Smdb.Core.Movies;
 
 using Shared.Http;
 
+//El movie repository puede ver hacer CRUD de Movies
 public interface IMovieRepository
 {
 	public Task<PagedResult<Movie>?> ReadMovies(int page, int size);

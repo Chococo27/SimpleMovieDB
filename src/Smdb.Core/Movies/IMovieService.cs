@@ -2,6 +2,7 @@ namespace Smdb.Core.Movies;
 
 using Shared.Http;
 
+//Se envuelve los resultados del CRUD en objetos Result
 public interface IMovieService
 {
 	public Task<Result<PagedResult<Movie>>> ReadMovies(int page, int size);

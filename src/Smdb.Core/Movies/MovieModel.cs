@@ -1,5 +1,8 @@
 namespace Smdb.Core.Movies;
 
+//Posee Id, Title. Year y Description
+//Recoge todos los parametros
+//Tiene metodo de debugin
 public class Movie
 {
 	public int Id { get; set; }

@@ -3,6 +3,7 @@ namespace Smdb.Core.Movies;
 using Shared.Http;
 using Smdb.Core.Db;
 
+//Movie repository utiliza la implementacion en memory database
 public class MemoryMovieRepository : IMovieRepository
 {
 	private MemoryDatabase db;

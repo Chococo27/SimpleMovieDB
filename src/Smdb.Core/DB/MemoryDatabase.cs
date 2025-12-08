@@ -2,12 +2,17 @@ namespace Smdb.Core.Db;
 
 using Smdb.Core.Movies;
 
+//Posee una lista de movies
+//Simula el proceso de cuando se añade un nuevo movie se genera un ID nuevo
 public class MemoryDatabase
 {
 	public List<Movie> Movies { get; }
 
 	private int nextMovieId;
 
+	//Lista de movies
+	//semilla de movies
+	//El proximo Id va a ser 51
 	public MemoryDatabase()
 	{
 		Movies = [];

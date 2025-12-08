@@ -3,6 +3,8 @@ namespace Smdb.Core.Movies;
 using Shared.Http;
 using System.Net;
 
+//Utiliza un dependency injection para recibir el repositorio de movies...
+//y realizar todas las operaciones de CRUD y validacion
 public class DefaultMovieService : IMovieService
 {
 	private IMovieRepository movieRepository;
@@ -12,6 +14,11 @@ public class DefaultMovieService : IMovieService
 		this.movieRepository = movieRepository;
 	}
 
+	//Condiciones de la paginacion
+	//No puede tener un page o size menor de 1
+	//si no hubo error intenta proveer el paged result usando repositorio
+	//Si sale null la operacion fallo
+	//de otro modo da pageResult
 	public async Task<Result<PagedResult<Movie>>> ReadMovies(int page, int size)
 	{
 		if (page < 1)
@@ -38,6 +45,11 @@ public class DefaultMovieService : IMovieService
 		return result;
 	}
 
+	//Verifica si la data es valida 
+	//si hubo error devuelve los errores de validacion
+	//si no hubo error si intenta crear movie usando repositorio
+	//Si sale null la operacion fallo (NotFound)
+	//de otro modo crea el movie (Created)
 	public async Task<Result<Movie>> CreateMovie(Movie newMovie)
 	{
 		var validationResult = ValidateMovie(newMovie);
@@ -54,6 +66,9 @@ public class DefaultMovieService : IMovieService
 		return result;
 	}
 
+	//Pasa el request al repository
+	//Si movie es = null significa que no existe o no la encontro con aquel ID
+	//De otro modo devuelve el resultado que se pidio
 	public async Task<Result<Movie>> ReadMovie(int id)
 	{
 		var movie = await movieRepository.ReadMovie(id);
@@ -66,6 +81,11 @@ public class DefaultMovieService : IMovieService
 		return result;
 	}
 
+	//Verifica si la data es valida 
+	//si hubo error devuelve los errores de validacion
+	//si no hubo error si intenta crear movie usando repositorio
+	//Si sale null la operacion fallo (NotFound)
+	//de otro modo hizo update del movie (OK)
 	public async Task<Result<Movie>> UpdateMovie(int id, Movie newData)
 	{
 		var validationResult = ValidateMovie(newData);
@@ -82,6 +102,9 @@ public class DefaultMovieService : IMovieService
 		return result;
 	}
 
+	//Pasa el request al repository
+	//Si movie es = null significa que no existe o no la encontro con aquel ID
+	//De otro modo borra el movie que se pidio
 	public async Task<Result<Movie>> DeleteMovie(int id)
 	{
 		var movie = await movieRepository.DeleteMovie(id);
@@ -94,6 +117,9 @@ public class DefaultMovieService : IMovieService
 		return result;
 	}
 
+	//Verifica que: lo que se envio no es null, el title no este vacio o sea muy largo,
+	//que el año no sea menor de 1888 o mayor del año actual
+	//de otro modo todo bueno 
 	private static Result<Movie>? ValidateMovie(Movie? movieData)
 	{
 		if (movieData is null)
