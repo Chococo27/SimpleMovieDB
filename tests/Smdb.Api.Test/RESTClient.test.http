@@ -1,0 +1,55 @@
+@host = http://localhost:8080
+@baseUrl = {{host}}/api/v1/movies
+@movieId = 1
+
+### -----------------------
+### Get paged movies
+### -----------------------
+GET {{baseUrl}}?page=1&size=10
+Accept: application/json
+
+
+### -----------------------
+### Create a movie
+### -----------------------
+POST {{baseUrl}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": -1,
+  "title": "Inception",
+  "year": 2010,
+  "description": "A skilled thief who enters dreams to steal secrets."
+}
+
+
+### -----------------------
+### Read a single movie
+### -----------------------
+# Replace 1 with any movie ID you want to read
+GET {{baseUrl}}/3
+Accept: application/json
+
+
+### -----------------------
+### Update a movie
+### -----------------------
+# Replace 1 with the movie ID you want to update
+PUT {{baseUrl}}/3
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Joker 2",
+  "year": 2020,
+  "description": "A man that is a joke."
+}
+
+
+### -----------------------
+### Delete a movie
+### -----------------------
+# Replace 1 with the movie ID you want to delete
+DELETE {{baseUrl}}/3
+Accept: application/json

@@ -72,7 +72,7 @@ public class MoviesController
 	// curl -X PUT "http://localhost:8080/api/v1/movies/1" -H "Content-Type: application/json" -d "{ \"title\": \"Joker 2\", \"year\": 2020, \"description\": \"A man that is a joke.\" }" 
 	public async Task UpdateMovie(HttpListenerRequest req, HttpListenerResponse res, Hashtable props, Func<Task> next)
 	{
-		var uParams = (NameValueCollection)props["req,params"]!;
+		var uParams = (NameValueCollection)props["req.params"]!;
 		int id = int.TryParse(uParams["id"]!, out int i) ? i : -1;
 		var text = (string)props["req.text"]!;
 		var movie = JsonSerializer.Deserialize<Movie>(text, JsonSerializerOptions.Web);
