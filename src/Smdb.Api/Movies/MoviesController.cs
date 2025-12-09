@@ -11,38 +11,48 @@ public class MoviesController
 {
 	private IMovieService movieService;
 
+	//Recive el movie service para poder satisfacer el request
 	public MoviesController(IMovieService movieService)
 	{
 		this.movieService = movieService;
 	}
 
+	//Primera 2 lineas cojen req.QueryString y proven resultado de otro modo dan default
+	//Luego delega el movie Service que lea page con ese size y recibe los resultados
+	//Usa JsonUtils y pasa el result, page y size
 	// curl -X GET "http://localhost:8080/api/v1/movies?page=1&size=10" 
-
-	public async Task ReadMovies(HttpListenerRequest req, HttpListenerResponse res,
-		Hashtable props, Func<Task> next)
+	public async Task ReadMovies(HttpListenerRequest req, HttpListenerResponse res, Hashtable props, Func<Task> next)
 	{
 		int page = int.TryParse(req.QueryString["page"], out int p) ? p : 1;
 		int size = int.TryParse(req.QueryString["size"], out int s) ? s : 9;
+
 		var result = await movieService.ReadMovies(page, size);
+
 		await JsonUtils.SendPagedResultResponse(req, res, props, result, page, size);
+
 		await next();
 	}
 
+	//Toma el req.text y lo desirializa convirtiendolo en un movie
+	//Coje el movie y se lo pasa al service para que intente crear un movie
+	//Usa JsonUtils y pasa el result. Si hay otro middleware lo corre
 	// curl -X POST "http://localhost:8080/api/v1/movies" -H "Content-Type: application/json" -d "{ \"id\": -1, \"title\": \"Inception\", \"year\": 2010, \"description\": \"A skilled thief who enters dreams to steal secrets.\" }" 
-	public async Task CreateMovie(HttpListenerRequest req,
-	HttpListenerResponse res, Hashtable props, Func<Task> next)
+	public async Task CreateMovie(HttpListenerRequest req, HttpListenerResponse res, Hashtable props, Func<Task> next)
 	{
 		var text = (string)props["req.text"]!;
-		var movie = JsonSerializer.Deserialize<Movie>(text,
-		JsonSerializerOptions.Web);
+		var movie = JsonSerializer.Deserialize<Movie>(text, JsonSerializerOptions.Web);
 		var result = await movieService.CreateMovie(movie!);
+
 		await JsonUtils.SendResultResponse(req, res, props, result);
 		await next();
 	}
 
+	//Recive el ID del movie a leer usando req.params
+	//Extrae el ID y lo convierte en int de otro modo da default
+	//Luego delega el movie Service que lea el resultado
+	//Usa JsonUtils y pasa el result. Si hay otro middleware lo corre
 	// curl -X GET "http://localhost:8080/api/v1/movies/1" 
-	public async Task ReadMovie(HttpListenerRequest req, HttpListenerResponse res,
-		Hashtable props, Func<Task> next)
+	public async Task ReadMovie(HttpListenerRequest req, HttpListenerResponse res, Hashtable props, Func<Task> next)
 	{
 		var uParams = (NameValueCollection)props["req.params"]!;
 		int id = int.TryParse(uParams["id"]!, out int i) ? i : -1;
@@ -54,15 +64,19 @@ public class MoviesController
 		await next();
 	}
 
+	//Recive el ID del movie a update usando req.params
+	//Extrae el ID y lo convierte en int de otro modo da default
+	//Toma el req.text y lo desirializa convirtiendolo en un movie
+	//Luego delega el movie Service que haga update al movie
+	//Usa JsonUtils y pasa el result. Si hay otro middleware lo corre
 	// curl -X PUT "http://localhost:8080/api/v1/movies/1" -H "Content-Type: application/json" -d "{ \"title\": \"Joker 2\", \"year\": 2020, \"description\": \"A man that is a joke.\" }" 
-	public async Task UpdateMovie(HttpListenerRequest req,
-		HttpListenerResponse res, Hashtable props, Func<Task> next)
+	public async Task UpdateMovie(HttpListenerRequest req, HttpListenerResponse res, Hashtable props, Func<Task> next)
 	{
 		var uParams = (NameValueCollection)props["req,params"]!;
 		int id = int.TryParse(uParams["id"]!, out int i) ? i : -1;
 		var text = (string)props["req.text"]!;
-		var movie = JsonSerializer.Deserialize<Movie>(text,
-			JsonSerializerOptions.Web);
+		var movie = JsonSerializer.Deserialize<Movie>(text, JsonSerializerOptions.Web);
+
 		var result = await movieService.UpdateMovie(id, movie!);
 
 		await JsonUtils.SendResultResponse(req, res, props, result);
@@ -70,13 +84,17 @@ public class MoviesController
 		await next();
 	}
 
+	//Recive el ID del movie a borrar usando req.params
+	//Extrae el ID y lo convierte en int de otro modo da default
+	//Luego delega el movie Service que haga delete al movie
+	//Usa JsonUtils y pasa el result. Si hay otro middleware lo corre
 	// curl -X DELETE http://localhost:8080/api/v1/movies/1 
-	public async Task DeleteMovie(HttpListenerRequest req,
-	HttpListenerResponse res, Hashtable props, Func<Task> next)
+	public async Task DeleteMovie(HttpListenerRequest req, HttpListenerResponse res, Hashtable props, Func<Task> next)
 	{
 		var uParams = (NameValueCollection)props["req.params"]!;
 		int id = int.TryParse(uParams["id"]!, out int i) ? i : -1;
 		var result = await movieService.DeleteMovie(id);
+
 		await JsonUtils.SendResultResponse(req, res, props, result);
 		await next();
 	}
