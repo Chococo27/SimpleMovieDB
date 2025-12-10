@@ -1,10 +1,267 @@
-* {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
+/* ================================
+   Global Styles
+================================ */
+
+:root {
+	--green-100: #cef5d1;
+	--green-200: #c7eecb;
+	--green-300: #9fddab;
+	--green-400: #6acb81;
+	--green-500: #2fb859;
+	--green-600: #249345;
+	--green-700: #1a6d33;
+
+	--text-dark: #1a1a1a;
+	--text-light: #fff;
+
+	--radius: 6px;
+	--shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 body {
-	background-color: rgb(0, 104, 52);
-	color: silver;
+	margin: 0;
+	font-family: system-ui, Arial, sans-serif;
+	background: #145c3b;
+	color: var(--text-dark);
+}
+
+/* ================================
+   Header & Navigation
+================================ */
+
+header {
+	padding: 16px;
+	background: var(--green-600);
+	color: var(--text-light);
+}
+
+header h1 {
+	margin: 0 0 8px 0;
+}
+
+nav ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: flex;
+	gap: 8px;
+}
+
+nav a.btn {
+	background: var(--green-400);
+	color: var(--text-light);
+	padding: 6px 12px;
+	border-radius: var(--radius);
+	text-decoration: none;
+	font-weight: 600;
+	box-shadow: var(--shadow);
+	transition: background 0.2s;
+}
+
+nav a.btn:hover {
+	background: var(--green-500);
+}
+
+/* ================================
+   Layout Helpers
+================================ */
+
+.container {
+	max-width: 900px;
+	margin: auto;
+	padding: 20px;
+}
+
+.grid {
+	display: grid;
+	gap: 16px;
+}
+
+.cards {
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 16px;
+}
+
+.table th,
+.table td {
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+/* ================================
+   Buttons
+================================ */
+
+.btn {
+	display: inline-block;
+	padding: 8px 14px;
+	border-radius: var(--radius);
+	background: var(--green-300);
+	color: var(--text-dark);
+	text-decoration: none;
+	font-weight: 600;
+	transition: background 0.2s;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background: var(--green-400);
+}
+
+.primary {
+	background: var(--green-600);
+	color: var(--text-light);
+}
+
+.primary:hover {
+	background: var(--green-700);
+}
+
+.danger {
+	background: #c0392b;
+	color: #fff;
+}
+
+.danger:hover {
+	background: #a5281f;
+}
+
+/* ================================
+   Status Badge & Pagination Badge
+================================ */
+
+.badge {
+	display: inline-block;
+	background: var(--green-400);
+	color: white;
+	padding: 4px 10px;
+	border-radius: var(--radius);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.status {
+	margin-bottom: 12px;
+	padding: 10px;
+	border-radius: var(--radius);
+	background: var(--green-100);
+	font-weight: 600;
+}
+
+/* ================================
+   Cards
+================================ */
+
+.card {
+	padding: 16px;
+	border-radius: var(--radius);
+	background: var(--green-100);
+	box-shadow: var(--shadow);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.card h3 {
+	margin-top: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.row-actions {
+	display: flex;
+	gap: 6px;
+	margin-top: 10px;
+}
+
+/* ================================
+   Form
+================================ */
+
+.field label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+}
+
+input,
+textarea,
+select {
+	width: 100%;
+	padding: 8px;
+	border-radius: var(--radius);
+	border: 1px solid #ccc;
+	font-size: 1rem;
+}
+
+textarea {
+	min-height: 80px;
+	resize: vertical;
+}
+
+.form-actions {
+	display: flex;
+	gap: 12px;
+}
+
+/* ================================
+   Special Status Selectors
+   (Green-shade variants)
+================================ */
+
+/* Successful or valid */
+.ok {
+	background: #d8f5d8;
+	color: #1d7e1d;
+	border-left: 5px solid #23a123;
+	padding: 8px 12px;
+	border-radius: var(--radius);
+}
+
+/* Error (but green-tinted theme) */
+.err {
+	background: #f2ffe9;
+	color: #2e5f1d;
+	border-left: 5px solid #7faa49;
+	padding: 8px 12px;
+	border-radius: var(--radius);
+}
+
+/* Warning */
+.warn {
+	background: #f9ffe0;
+	color: #5f6e1d;
+	border-left: 5px solid #a0b93b;
+	padding: 8px 12px;
+	border-radius: var(--radius);
+}
+
+/* Disabled or inactive */
+.disable {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+/* ================================
+   Controls (Pagination)
+================================ */
+
+.controls {
+	margin-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+
+.page-size-container {
+	display: flex;
+	align-items: center;
+	gap: 6px;
 }
